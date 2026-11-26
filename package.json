@@ -1,0 +1,21 @@
+{
+  "name": "reading-book",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "lint": "eslint src tests tools eslint.config.js",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/reader.test.js",
+    "test:gate": "node --test --test-reporter=spec --test-reporter-destination=stdout --test-reporter=tap --test-reporter-destination=artifacts/unit.tap tests/reader.test.js",
+    "test:smoke": "npm run build && node --test --test-reporter=spec --test-reporter-destination=stdout --test-reporter=tap --test-reporter-destination=artifacts/smoke.tap tests/build.test.js",
+    "build": "npm run typecheck && node tools/build.mjs"
+  },
+  "devDependencies": {
+    "eslint": "10.15.0",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,6 +1,12 @@
-# Team AI-Native Harness & Skills Template
+# Reading_book
 
-团队通用的 **AI 原生研发约束基座**（适配 LoopForge + DeepSeek Harness `dsh` / 异构 Reviewer）。本仓库**不含任何业务代码骨架**，门禁脚本采用**零第三方依赖的 Node.js（`.mjs`）**编写，原生支持 **Windows（PowerShell/CMD）、macOS、Linux 与 Docker 沙箱**。
+个人浏览器阅读器。当前可预览本地 UTF-8 TXT 文件，书架和书签是后续需求。项目沿用 LoopForge + DeepSeek Harness `dsh` 和独立 Reviewer 的自动化门禁。
+
+## 本地验证
+
+需要 Node.js 24、Git 和 Gitleaks。先运行 `npm ci`，再运行 `npm run build`。用本地静态服务器托管 `dist/`，在浏览器打开页面后选择「导入 TXT」。
+
+日常开发运行 `node scripts/gate.mjs gate-mvp`，构建冒烟测试使用 `npm run test:smoke`。原模板的初始化说明保留在下方，供维护基座时参考。
 
 ## 核心理念
 
@@ -131,18 +137,7 @@ sudo tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks
    ```
    > 以上 `commands` 中的值为示例，请替换为你的项目实际命令。`docsVerify` 和 `licenseCheck` 若暂不需要可留空。
 
-2. **编辑 `.github/workflows/ci.yml`**，取消注释依赖安装步骤，替换为项目实际所需：
-   ```yaml
-   - name: Setup pnpm
-     if: steps.mode.outputs.bootstrapped == 'true'
-     uses: pnpm/action-setup@v4
-     with:
-       version: 9
-
-   - name: Install project dependencies
-     if: steps.mode.outputs.bootstrapped == 'true'
-     run: pnpm install --frozen-lockfile
-   ```
+2. 本项目的 `.github/workflows/ci.yml` 使用 Node.js 24。每次运行先 `npm ci`，再执行构建冒烟测试和严格门禁。
 
 3. **运行完整门禁验证**（因修改了门禁基座文件，需加 `ALLOW_HARNESS_EDIT=1`）：
    ```bash
@@ -150,6 +145,8 @@ sudo tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks
    ```
 
 4. **全绿后提交并合并**至受保护的 `main` 分支。此后所有 Agent 和 CI 都将以完整门禁模式运行，Agent 不再拥有 `ALLOW_HARNESS_EDIT` 权限。
+
+   首次初始化 PR 会修改受保护的基座文件。严格 CI 用模板版 `main` 比对时会拦住这些修改。仓库维护者须核对代码和本地完整门禁结果，并按组织规则批准这一次基座更新。将初始化提交纳入 `main` 后，检查该提交在默认分支上的 CI 结果。
 
 ### 完成标志
 
@@ -161,8 +158,8 @@ sudo tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks
 - [x] 技术栈骨架搭建完毕，至少有一条通过的单元测试
 - [x] `harness.config.json` 中 `bootstrapped: true`，`commands` 已绑定实际命令
 - [x] `node scripts/gate.mjs gate-mvp` 退出码为 `0`
-- [x] 已合并至 `main` 分支
-- [x] LoopForge 角色与 SOP 流水线已配置完成
+- [ ] 已合并至 `main` 分支并核对 GitHub Actions 的结果
+- [ ] 已在 LoopForge 的实际工作区验证初始化后的 SOP
 
 ### 第 6 步：接入 LoopForge
 

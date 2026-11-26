@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Install Gitleaks
         run: |
@@ -26,20 +26,13 @@ jobs:
           tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks
           gitleaks version
 
-      - name: Detect project bootstrap status
-        id: mode
-        run: |
-          BOOTSTRAPPED=$(node -p "Boolean(JSON.parse(require('fs').readFileSync('harness.config.json','utf8')).bootstrapped)")
-          echo "bootstrapped=$BOOTSTRAPPED" >> "$GITHUB_OUTPUT"
+      - name: Install project dependencies
+        run: npm ci
 
-      - name: Run Harness Gate (template / pre-scaffold mode)
-        if: steps.mode.outputs.bootstrapped != 'true'
-        env:
-          ALLOW_HARNESS_EDIT: "1"
-        run: node scripts/gate.mjs gate-harness
+      - name: Smoke test the build
+        run: npm run test:smoke
 
-      - name: Run MVP Gate (bootstrapped project mode, strict anti-tamper)
-        if: steps.mode.outputs.bootstrapped == 'true'
+      - name: Run the strict MVP gate
         run: node scripts/gate.mjs gate-mvp
 
       - name: Upload gate artifacts

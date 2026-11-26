@@ -1,0 +1,54 @@
+:root {
+  color: #243346;
+  background: #eaf1f5;
+  font: 16px/1.65 system-ui, sans-serif;
+}
+
+body { margin: 0; }
+
+main {
+  max-width: 44rem;
+  margin: 4rem auto;
+  padding: 0 1.25rem;
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+h1, h2 { margin: 0; font-family: Georgia, 'Songti SC', 'SimSun', serif; }
+header p { margin: 0.25rem 0 0; color: #495c71; }
+
+label {
+  display: inline-block;
+  padding: 0.55rem 1rem;
+  border-radius: 0.3rem;
+  color: #fff;
+  background: #254a6b;
+  cursor: pointer;
+}
+
+input[type='file'] { position: absolute; width: 1px; height: 1px; opacity: 0; }
+header:focus-within label { outline: 3px solid #356e9c; outline-offset: 3px; }
+#status { min-height: 1.65em; }
+
+article {
+  min-height: 28vh;
+  padding: clamp(1.25rem, 5vw, 3rem);
+  border-inline-start: 0.3rem solid #79a0ba;
+  background: #fff;
+}
+
+#book-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.85;
+}
+
+@media (max-width: 40rem) {
+  main { margin: 2rem auto; }
+}
