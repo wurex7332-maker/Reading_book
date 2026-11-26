@@ -1,0 +1,25 @@
+# Test & SOP gate artifacts
+artifacts/
+coverage/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# Common build & dependency directories
+node_modules/
+dist/
+build/
+.venv/
+__pycache__/
+
+# Generated types (e.g. Element Plus auto-import)
+**/types/generated/
+
+# OS & IDE
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log

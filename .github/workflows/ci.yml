@@ -1,0 +1,51 @@
+name: CI Gate (G6)
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Gitleaks
+        run: |
+          curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.21.2/gitleaks_8.21.2_linux_x64.tar.gz -o /tmp/gitleaks.tar.gz
+          tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks
+          gitleaks version
+
+      - name: Detect project bootstrap status
+        id: mode
+        run: |
+          BOOTSTRAPPED=$(node -p "Boolean(JSON.parse(require('fs').readFileSync('harness.config.json','utf8')).bootstrapped)")
+          echo "bootstrapped=$BOOTSTRAPPED" >> "$GITHUB_OUTPUT"
+
+      - name: Run Harness Gate (template / pre-scaffold mode)
+        if: steps.mode.outputs.bootstrapped != 'true'
+        env:
+          ALLOW_HARNESS_EDIT: "1"
+        run: node scripts/gate.mjs gate-harness
+
+      - name: Run MVP Gate (bootstrapped project mode, strict anti-tamper)
+        if: steps.mode.outputs.bootstrapped == 'true'
+        run: node scripts/gate.mjs gate-mvp
+
+      - name: Upload gate artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-artifacts
+          path: artifacts/
+          if-no-files-found: ignore
