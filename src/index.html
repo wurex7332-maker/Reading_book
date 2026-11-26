@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="day">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,19 +8,57 @@
   </head>
   <body>
     <main>
-      <header>
-        <div>
-          <h1>阅读器</h1>
-          <p id="file-help">支持 UTF-8 编码的 TXT 文件，最大 5 MB。</p>
+      <section id="library-view" aria-labelledby="library-title">
+        <header>
+          <div>
+            <h1 id="library-title">我的书架</h1>
+            <p id="file-help">支持 UTF-8 / GBK 的 TXT，最大 5 MB。</p>
+          </div>
+          <div class="import-control">
+            <input id="book-file" class="visually-hidden" type="file" accept=".txt,text/plain" aria-describedby="file-help">
+            <label class="primary" for="book-file">导入 TXT</label>
+          </div>
+        </header>
+        <p id="status" role="status" aria-live="polite"></p>
+        <div id="book-list" class="book-list"></div>
+      </section>
+      <section id="reader-view" hidden aria-labelledby="book-title">
+        <header class="reader-toolbar">
+          <button id="back-library" type="button">返回书架</button>
+          <h1 id="book-title"></h1>
+          <button id="toggle-bookmark" type="button">添加/删除书签</button>
+        </header>
+        <div class="reader-layout">
+          <aside>
+            <section aria-labelledby="toc-title">
+              <h2 id="toc-title">目录</h2>
+              <nav id="toc"></nav>
+            </section>
+            <section aria-labelledby="bookmark-title">
+              <h2 id="bookmark-title">书签</h2>
+              <div id="bookmarks"></div>
+            </section>
+          </aside>
+          <section class="reading-column">
+            <div class="settings" aria-label="排版设置">
+              <label>字号 <input id="font-size" type="range" min="14" max="32"></label>
+              <label>行距 <input id="line-height" type="range" min="1.4" max="2.4" step="0.1"></label>
+              <label>主题
+                <select id="theme">
+                  <option value="day">日间</option>
+                  <option value="night">夜间</option>
+                </select>
+              </label>
+            </div>
+            <div id="reader-status" role="status" aria-live="polite"></div>
+            <article id="book-text" tabindex="0"></article>
+            <footer>
+              <button id="previous-page" type="button">上一屏</button>
+              <button id="next-page" type="button">下一屏</button>
+            </footer>
+          </section>
         </div>
-        <label for="book-file">导入 TXT</label>
-        <input id="book-file" type="file" accept=".txt,text/plain" aria-describedby="file-help">
-      </header>
-      <p id="status" role="status" aria-live="polite"></p>
-      <article aria-labelledby="book-title">
-        <h2 id="book-title">还没有打开书籍</h2>
-        <p id="book-text">选择一个 TXT 文件，开始阅读。</p>
-      </article>
+      </section>
     </main>
     <script type="module" src="./main.js"></script>
   </body>
