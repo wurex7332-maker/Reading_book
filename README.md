@@ -137,18 +137,7 @@ sudo tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks
    ```
    > 以上 `commands` 中的值为示例，请替换为你的项目实际命令。`docsVerify` 和 `licenseCheck` 若暂不需要可留空。
 
-2. **编辑 `.github/workflows/ci.yml`**，取消注释依赖安装步骤，替换为项目实际所需：
-   ```yaml
-   - name: Setup pnpm
-     if: steps.mode.outputs.bootstrapped == 'true'
-     uses: pnpm/action-setup@v4
-     with:
-       version: 9
-
-   - name: Install project dependencies
-     if: steps.mode.outputs.bootstrapped == 'true'
-     run: pnpm install --frozen-lockfile
-   ```
+2. 本项目的 `.github/workflows/ci.yml` 使用 Node.js 24。每次运行先 `npm ci`，再执行构建冒烟测试和严格门禁。
 
 3. **运行完整门禁验证**（因修改了门禁基座文件，需加 `ALLOW_HARNESS_EDIT=1`）：
    ```bash
@@ -156,6 +145,8 @@ sudo tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks
    ```
 
 4. **全绿后提交并合并**至受保护的 `main` 分支。此后所有 Agent 和 CI 都将以完整门禁模式运行，Agent 不再拥有 `ALLOW_HARNESS_EDIT` 权限。
+
+   首次初始化 PR 会修改受保护的基座文件。严格 CI 用模板版 `main` 比对时会拦住这些修改。仓库维护者须核对代码和本地完整门禁结果，并按组织规则批准这一次基座更新。将初始化提交纳入 `main` 后，检查该提交在默认分支上的 CI 结果。
 
 ### 完成标志
 
@@ -167,8 +158,8 @@ sudo tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks
 - [x] 技术栈骨架搭建完毕，至少有一条通过的单元测试
 - [x] `harness.config.json` 中 `bootstrapped: true`，`commands` 已绑定实际命令
 - [x] `node scripts/gate.mjs gate-mvp` 退出码为 `0`
-- [x] 已合并至 `main` 分支
-- [x] LoopForge 角色与 SOP 流水线已配置完成
+- [ ] 已合并至 `main` 分支并核对 GitHub Actions 的结果
+- [ ] 已在 LoopForge 的实际工作区验证初始化后的 SOP
 
 ### 第 6 步：接入 LoopForge
 

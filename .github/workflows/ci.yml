@@ -26,29 +26,14 @@ jobs:
           tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks
           gitleaks version
 
-      - name: Detect project bootstrap status
-        id: mode
-        run: |
-          BOOTSTRAPPED=$(node -p "Boolean(JSON.parse(require('fs').readFileSync('harness.config.json','utf8')).bootstrapped)")
-          echo "bootstrapped=$BOOTSTRAPPED" >> "$GITHUB_OUTPUT"
-
       - name: Install project dependencies
-        if: steps.mode.outputs.bootstrapped == 'true'
         run: npm ci
 
-      - name: Run Harness Gate (template / pre-scaffold mode)
-        if: steps.mode.outputs.bootstrapped != 'true'
-        env:
-          ALLOW_HARNESS_EDIT: "1"
-        run: node scripts/gate.mjs gate-harness
-
-      - name: Run MVP Gate (bootstrapped project mode, strict anti-tamper)
-        if: steps.mode.outputs.bootstrapped == 'true'
-        run: node scripts/gate.mjs gate-mvp
-
       - name: Smoke test the build
-        if: steps.mode.outputs.bootstrapped == 'true'
         run: npm run test:smoke
+
+      - name: Run the strict MVP gate
+        run: node scripts/gate.mjs gate-mvp
 
       - name: Upload gate artifacts
         if: always()

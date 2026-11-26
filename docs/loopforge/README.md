@@ -12,12 +12,14 @@
 
 ## 2. 推荐标准 MVP-SOP
 
+执行环境需要 Node.js 24、Git 和 PATH 中的 Gitleaks。门禁节点须在包含 Developer 变更的同一仓库工作区执行。工作区从干净克隆开始时，通过 `npm ci` 按锁文件安装开发依赖。
+
 | 顺序 | 节点 ID | 类型 | 角色 / 执行命令 | 失败打回策略 |
 | --- | --- | --- | --- | --- |
 | 1 | `plan` | Agent | `Planner`（M 级小需求可跳过；L 级必跑） | — |
 | 2 | `gate_design` | Human Gate | 人工确认 `artifacts/design.md` 的范围、AC 与修改白名单 | 打回 `plan` |
 | 3 | `implement` | Agent | `Developer` | — |
-| 4 | `gate_mvp` | Script | `node scripts/gate.mjs gate-mvp` | `on_fail -> implement`（`max_auto_retry: 3`） |
+| 4 | `gate_mvp` | Script | `npm ci && node scripts/gate.mjs gate-mvp` | `on_fail -> implement`（`max_auto_retry: 3`） |
 | 5 | `review` | Agent | `Reviewer`（输出 `artifacts/review.md`） | — |
 | 6 | `gate_review` | Script | `node scripts/gate.mjs check-review` | `on_fail -> implement`（`max_auto_retry: 3`） |
 | 7 | `gate_accept` | Human Gate | 审阅 `artifacts/review.md` + 测试证据包 → 批准提 PR | 打回 `implement` |

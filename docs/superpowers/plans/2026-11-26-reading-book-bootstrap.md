@@ -6,7 +6,8 @@
 
 **验收与实施**
 
-- [ ] AC-1：写入 TXT 导入测试，验证 UTF-8 文本正常读取、其他格式被拒绝、空文件有错误提示。先运行 `npm test` 确认功能缺失，再添加 `src/reader.js`。
-- [ ] AC-2：通过 `src/index.html`、`src/main.js` 和 `src/styles.css` 读取本地文件。用 `npm run build` 生成 `dist/`，用 `npm run test:smoke` 检查发布目录中的页面和读取模块。
-- [ ] AC-3：完善架构及 `AGENTS.md`，为 npm 安装、ESLint、TypeScript 和 Node 测试接入 CI。`REQ-000` 可变更 `AGENTS.md`、`harness.config.json`、`.github/workflows/ci.yml`、`.gitignore`、`README.md`、`docs/architecture/**`、本实施文档、两项不适用的模板技能、`package*.json`、`eslint.config.js`、`tsconfig.json`、`src/**`、`tests/**`、`tools/build.mjs`。
-- [ ] AC-4：保留原有门禁脚本，针对本次经授权的初始化运行一次 `gate-mvp`，并确认对初始化后的基准直接运行严格门禁也通过。随后由人工独立评审并决定是否合并。
+- [x] AC-1：验证 UTF-8 文本正常读取、其他格式被拒绝、空文件和编码错误有提示。
+- [x] AC-2：通过 `src/index.html`、`src/main.js` 和 `src/styles.css` 读取本地文件。`npm run test:smoke` 检查发布目录中的页面和读取模块。
+- [x] AC-3：完善架构及 `AGENTS.md`，为 npm 安装、ESLint、TypeScript 和 Node 测试接入 CI。`REQ-000` 的修改范围为 `AGENTS.md`、`harness.config.json`、`.github/workflows/ci.yml`、`README.md`、`docs/architecture/**`、`docs/loopforge/README.md`、本实施文档、两项不适用的模板技能、`package*.json`、`eslint.config.js`、`tsconfig.json`、`src/**`、`tests/**`、`tools/build.mjs`。
+- [x] AC-4（本地）：保留原有门禁脚本。初始化本地验证使用模板约定的一次性授权，并在模拟合并后的基准上通过严格门禁。
+- [ ] AC-4（合并）：由维护者确认变更及证据，合并至 `main`，核验 GitHub CI 和 LoopForge 实际工作区。

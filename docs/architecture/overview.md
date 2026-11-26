@@ -23,7 +23,7 @@ Reading_book 是个人文档阅读器。首期目标是从设备导入书籍、�
 | 依赖安装 | `npm ci` | 按锁文件安装开发依赖 |
 | lint | `npm run lint` | ESLint 检查 |
 | typecheck | `npm run typecheck` | TypeScript 严格检查 |
-| testUnit | `npm run test:gate` | `artifacts/unit.tap` |
+| testUnit | `node scripts/gate.mjs test-unit`（调用 `npm run test:gate`） | `artifacts/unit.tap` |
 | testE2e | `npm run test:smoke` | 构建产物冒烟测试和 `artifacts/smoke.tap` |
 | build | `npm run build` | `dist/` |
 
