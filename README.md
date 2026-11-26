@@ -1,6 +1,12 @@
-# Team AI-Native Harness & Skills Template
+# Reading_book
 
-团队通用的 **AI 原生研发约束基座**（适配 LoopForge + DeepSeek Harness `dsh` / 异构 Reviewer）。本仓库**不含任何业务代码骨架**，门禁脚本采用**零第三方依赖的 Node.js（`.mjs`）**编写，原生支持 **Windows（PowerShell/CMD）、macOS、Linux 与 Docker 沙箱**。
+个人浏览器阅读器。当前可预览本地 UTF-8 TXT 文件，书架和书签是后续需求。项目沿用 LoopForge + DeepSeek Harness `dsh` 和独立 Reviewer 的自动化门禁。
+
+## 本地验证
+
+需要 Node.js 24、Git 和 Gitleaks。先运行 `npm ci`，再运行 `npm run build`。用本地静态服务器托管 `dist/`，在浏览器打开页面后选择「导入 TXT」。
+
+日常开发运行 `node scripts/gate.mjs gate-mvp`，构建冒烟测试使用 `npm run test:smoke`。原模板的初始化说明保留在下方，供维护基座时参考。
 
 ## 核心理念
 
